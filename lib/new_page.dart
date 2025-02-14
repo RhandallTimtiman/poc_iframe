@@ -31,8 +31,18 @@ class _NewPageState extends State<NewPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.loadRequest(
           Uri.parse(widget.apiData["accountDetails"]["iframeUrl"]));
-      var token = jsonEncode(widget.apiData["tokenDetails"]);
-      controller.runJavaScript("window.postMessage('$token', '*');");
+      // controller
+      //     .loadRequest(Uri.parse("http://192.168.68.117:5173/acceptance"));
+
+      // controller.loadRequest(
+      //     Uri.parse('http://192.168.1.39:5173/main/investment-opportunities'));
+      // var token = jsonEncode(widget.apiData["tokenDetails"]);
+      // // var token = "hello";
+      // debugPrint(token);
+      // // controller.runJavaScript("window.postMessage('$token', '*');");
+
+      // controller.runJavaScript(
+      //     "window.postMessage({action: 'bibo', value: '$token' }, '*');");
     });
 
     return Scaffold(
@@ -40,7 +50,19 @@ class _NewPageState extends State<NewPage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text('Web View'),
       ),
-      body: WebViewWidget(controller: controller),
+      body: WebViewWidget(
+        controller: controller
+          ..setNavigationDelegate(
+            NavigationDelegate(
+              onPageFinished: (String url) {
+                var token = jsonEncode(widget.apiData);
+
+                controller.runJavaScript(
+                    "window.postMessage({action: 'bibo', value: '$token' }, '*');");
+              },
+            ),
+          ),
+      ),
     );
   }
 }

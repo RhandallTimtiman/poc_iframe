@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:poc_app/data/api_model.dart';
 
 class ApiService {
   final Dio _dio = Dio();
